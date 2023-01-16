@@ -1,14 +1,14 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const router = require("./routes/routes")
-const app = express()
+const router = require("./routers/router")
 
+const app = express()
 app.use(express.json())
 
 mongoose.set('strictQuery', true)
-mongoose.connect("mongodb+srv://Amankr:pwwELCe59UIUh9mj@cluster0.oxwexg5.mongodb.net/group15Database",{useNewUrlParser: true})
-.then(() => console.log("My DB is coonected"))
-.catch((err)=> console.error(err))
+mongoose.connect("mongodb+srv://Amankr:pwwELCe59UIUh9mj@cluster0.oxwexg5.mongodb.net/group15Database")
+      .then(() => console.log("My DB is coonected"))
+      .catch((err) => console.error(err))
 
 
 app.use("/", router)
