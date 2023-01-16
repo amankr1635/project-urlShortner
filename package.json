@@ -1,21 +1,22 @@
 {
-  "name": "californium",
+  "name": "group-15",
   "version": "1.0.0",
-  "description": "Californium cohort (Nov 2022 - Mar 2023)",
+  "description": "Project -03 url shortner",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "nodemon src/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sabihak89/californium.git"
+    "url": "https://github.com/Sanhil143/project-urlShortnerGroup15.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sabihak89/californium/issues"
+    "url": "https://github.com/Sanhil143/project-urlShortnerGroup15.git"
   },
-  "homepage": "https://github.com/sabihak89/californium#readme",
+  "homepage": "https://github.com/Sanhil143/project-urlShortnerGroup15.git",
   "dependencies": {
     "express": "^4.18.2",
     "mongoose": "^6.8.3",
