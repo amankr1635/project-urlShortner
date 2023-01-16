@@ -1,1 +1,1 @@
-const urlModel = require("../")
+const urlModel = require("../models/urlModels");
