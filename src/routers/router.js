@@ -9,7 +9,7 @@ router.get('/:urlCode', controller.getUrl)
 
 
 router.all("/*", (req, res) => {
-    res.status(400).send({ status: false, message: "Invalid Http Request" })
+    res.status(400).send({ status: false, message: "invalid HTTP request" })
 })
 
 module.exports = router

@@ -54,7 +54,7 @@ const create = async (req, res) => {
         return res
             .status(201)
             .send({
-                status: true, message: "Data created successfully",
+                status: true,
                 body: { longUrl: body.longUrl, shortUrl: body.shortUrl, urlCode: body.urlCode }
             })
     } catch (error) {
@@ -75,11 +75,11 @@ const getUrl = async (req, res) => {
 
         let getData = await urlModel.findOne({urlCode:param}).select({longUrl:1, _id:0})
         if(!getData){
-            return res.status(404).send({status:false, message:"no such body exist"})
+            return res.status(404).send({status:false, message:"no such data exist"})
         }
         let longUrl = getData.longUrl
 
-        res.redirect(302,longUrl);
+        res.status(302).redirect(longUrl);
 
     } catch (error) {
         return res.status(500).send({ status: false, message: error.message })
