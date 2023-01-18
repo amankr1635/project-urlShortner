@@ -14,3 +14,6 @@ const redisClint = redis.createClient(
   });
 
   module.exports = redisClint
+
+
+//   alias : redis-cli -u redis://default:ImsB8tvefgIR7PZ8ajhZVxFNjbo6Bb4f@redis-13032.c301.ap-south-1-1.ec2.cloud.redislabs.com:13032
