@@ -26,7 +26,7 @@ const create = async (req, res) => {
     let longUrl = await GET_ASYNC(`${body.longUrl}`);
     let objectConversion = JSON.parse(longUrl);
     if (longUrl) {
-      return res.status(200).send({data : objectConversion});
+      return res.status(200).send({status: true ,data : objectConversion});
     }
     let checkUrl = await axios
       .get(body.longUrl)
