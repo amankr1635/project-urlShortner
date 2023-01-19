@@ -22,7 +22,7 @@ const create = async (req, res) => {
     if (typeof body.longUrl !== "string") {
       return res
         .status(400)
-        .send({ status: false, message: "Please enter valid url in string" });
+        .send({ status: false, message: "Please enter url in string" });
     }
 
     let longUrl = await GET_ASYNC(`${body.longUrl}`);
@@ -39,7 +39,7 @@ const create = async (req, res) => {
       .catch((err) => null);
 
     if (!checkUrl) {
-      return res.status(400).send({ status: false, message: "invalid request" });
+      return res.status(400).send({ status: false, message: "invalid url" });
     }
 
     let createUrl = shortId.generate().toLowerCase();
@@ -62,7 +62,7 @@ const create = async (req, res) => {
 
     let urls = {longUrl:createData.longUrl, urlCode: createData.urlCode, shortUrl: createData.shortUrl}
 
-    await SET_ASYNC(`${body.longUrl}`, 60*10, JSON.stringify(urls));
+    await SET_ASYNC(`${body.longUrl}`, 60 * 1440, JSON.stringify(urls));
 
     return res.status(201).send({
       status: true,
@@ -104,7 +104,7 @@ const getUrl = async (req, res) => {
 
       let longUrl = getUrl.longUrl;
 
-      await SET_ASYNC(`${param}`, 60 * 10, JSON.stringify(longUrl));
+      await SET_ASYNC(`${param}`, 60 * 1440, JSON.stringify(longUrl));
       res.status(302).redirect(longUrl);
     }
   } catch (error) {
