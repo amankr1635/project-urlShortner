@@ -30,7 +30,7 @@ const create = async (req, res) => {
     let objectConversion = JSON.parse(longUrl);
 
     if (longUrl) {
-      return res.status(200).send({status: true ,message : "This message is from cache and this url is already exist " , data : objectConversion});
+      return res.status(200).send({status: true ,message : "data is coming from cache and it is already exist", data : objectConversion});
     }
 
     let checkUrl = await axios
@@ -39,7 +39,7 @@ const create = async (req, res) => {
       .catch((err) => null);
 
     if (!checkUrl) {
-      return res.status(404).send({ status: false, message: "Not found" });
+      return res.status(400).send({ status: false, message: "invalid request" });
     }
 
     let createUrl = shortId.generate().toLowerCase();
@@ -55,14 +55,14 @@ const create = async (req, res) => {
     if (checkData) {
       return res
         .status(200)
-        .send({ message: "This url is already exist", data: checkData });
+        .send({ message:"this data is already exist and it is coming from mongo db", data: checkData });
     }
 
     let createData = await urlModel.create(body);
 
     let urls = {longUrl:createData.longUrl, urlCode: createData.urlCode, shortUrl: createData.shortUrl}
 
-    await SET_ASYNC(`${body.longUrl}`, 60*1, JSON.stringify(urls));
+    await SET_ASYNC(`${body.longUrl}`, 60*10, JSON.stringify(urls));
 
     return res.status(201).send({
       status: true,
