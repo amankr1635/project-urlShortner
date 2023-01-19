@@ -16,7 +16,7 @@ const create = async (req, res) => {
     if (Object.keys(body).length === 0) {
       return res
         .status(400)
-        .send({ status: false, message: "Please enter body on body" });
+        .send({ status: false, message: "Please enter data on body" });
     }
 
     if (typeof body.longUrl !== "string") {
@@ -104,7 +104,7 @@ const getUrl = async (req, res) => {
 
       let longUrl = getUrl.longUrl;
 
-      await SET_ASYNC(`${param}`, 60 * 1440, JSON.stringify(longUrl));
+      await SET_ASYNC(`${param}`, 60 * 10, JSON.stringify(longUrl));
       res.status(302).redirect(longUrl);
     }
   } catch (error) {
