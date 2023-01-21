@@ -1,7 +1,7 @@
 {
-  "name": "project of url Shortner Group15",
+  "name": "Project of url Shortner",
   "version": "1.0.0",
-  "description": "Project -03 url shortner",
+  "description": "Project -03, Group15",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
