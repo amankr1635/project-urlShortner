@@ -36,7 +36,7 @@ const create = async (req, res) => {
     let checkUrl = await axios
       .get(body.longUrl)
       .then(() => body.longUrl)
-      .catch((err) => null);
+      .catch((err) => false);
 
     if (!checkUrl) {
       return res.status(400).send({ status: false, message: "invalid url" });
@@ -66,7 +66,7 @@ const create = async (req, res) => {
 
     return res.status(201).send({
       status: true,
-      data: {longUrl:urls.longUrl, urlCode: urls.urlCode, shortUrl: urls.shortUrl}
+      data: urls
     });
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message });
@@ -85,7 +85,7 @@ const getUrl = async (req, res) => {
         .send({ status: false, message: "urlcode is not valid" });
     }
 
-    let createdUrl = await GET_ASYNC(`${param}`);
+    let createdUrl = await GET_ASYNC(` ${param} `);
 
     let objectConversion = JSON.parse(createdUrl);
 

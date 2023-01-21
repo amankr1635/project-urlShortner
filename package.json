@@ -1,5 +1,5 @@
 {
-  "name": "group-15",
+  "name": "project of url Shortner Group15",
   "version": "1.0.0",
   "description": "Project -03 url shortner",
   "main": "index.js",
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "https://github.com/Sanhil143/project-urlShortnerGroup15.git"
   },
-  "author": "",
+  "author": "Aman, sanhil, sagar",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Sanhil143/project-urlShortnerGroup15.git"
