@@ -12,13 +12,11 @@ const GET_ASYNC = promisify(redisClint.GET).bind(redisClint); //getex explore
 const create = async (req, res) => {
   try {
     let body = req.body;
-
-    if (Object.keys(body).length === 0) {
+    if(!body.longUrl){
       return res
-        .status(400)
-        .send({ status: false, message: "Please enter data on body" });
+      .status(400)
+      .send({ status: false, message: "Please enter Url" });
     }
-
     if (typeof body.longUrl !== "string") {
       return res
         .status(400)
@@ -44,7 +42,7 @@ const create = async (req, res) => {
 
     let createUrl = shortId.generate().toLowerCase();
 
-    let baseUrl = "http://localhost:3000/";
+    let baseUrl = process.env.BASEURL;
     body.shortUrl = baseUrl + createUrl;
     body.urlCode = createUrl;
 
