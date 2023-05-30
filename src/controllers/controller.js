@@ -11,65 +11,112 @@ const GET_ASYNC = promisify(redisClint.GET).bind(redisClint); //getex explore
 
 const create = async (req, res) => {
   try {
-    let body = req.body;
-    if(!body.longUrl){
-      return res
-      .status(400)
-      .send({ status: false, message: "Please enter Url" });
+    const body = req.body;
+    if (!body.longUrl) {
+      return res.status(400).send({ status: false, message: "Please enter a URL" });
     }
     if (typeof body.longUrl !== "string") {
-      return res
-        .status(400)
-        .send({ status: false, message: "Please enter url in string" });
+      return res.status(400).send({ status: false, message: "Please enter a URL as a string" });
     }
 
     let longUrl = await GET_ASYNC(`${body.longUrl}`);
-
     let objectConversion = JSON.parse(longUrl);
 
     if (longUrl) {
-      return res.status(200).send({status: true ,message : "data is coming from cache and it is already exist", data : objectConversion});
+      return res.status(200).send({ status: true, message: "Data is coming from the cache and already exists", data: objectConversion });
     }
 
-    let checkUrl = await axios
-      .get(body.longUrl)
-      .then(() => body.longUrl)
-      .catch((err) => false);
+    let checkUrl = await axios.get(body.longUrl);
 
     if (!checkUrl) {
-      return res.status(400).send({ status: false, message: "invalid url" });
+      return res.status(400).send({ status: false, message: "Invalid URL" });
     }
 
     let createUrl = shortId.generate().toLowerCase();
-
     let baseUrl = process.env.BASEURL;
     body.shortUrl = baseUrl + createUrl;
     body.urlCode = createUrl;
 
-    let checkData = await urlModel
-      .findOne({ longUrl: body.longUrl })
-      .select({ urlCode: 1, longUrl: 1, shortUrl: 1, _id: 0 });
+    let checkData = await urlModel.findOne({ longUrl: body.longUrl }).select({ urlCode: 1, longUrl: 1, shortUrl: 1, _id: 0 });
 
     if (checkData) {
-      return res
-        .status(200)
-        .send({ message:"this data is already exist and it is coming from mongo db", data: checkData });
+      return res.status(200).send({ message: "This data already exists in the database", data: checkData });
     }
 
     let createData = await urlModel.create(body);
-
-    let urls = {longUrl:createData.longUrl, urlCode: createData.urlCode, shortUrl: createData.shortUrl}
-
+    let urls = { longUrl: createData.longUrl, urlCode: createData.urlCode, shortUrl: createData.shortUrl };
     await SET_ASYNC(`${body.longUrl}`, 60 * 1440, JSON.stringify(urls));
 
-    return res.status(201).send({
-      status: true,
-      data: urls
-    });
+    return res.status(201).send({ status: true, data: urls });
   } catch (error) {
-    return res.status(500).send({ status: false, message: error.message });
+    console.error(error); // Log the error for debugging purposes
+    return res.status(500).send({ status: false, message: "An error occurred while processing the request" });
   }
 };
+
+
+
+// const create = async (req, res) => {
+//   try {
+//     let body = req.body;
+//     if(!body.longUrl){
+//       return res
+//       .status(400)
+//       .send({ status: false, message: "Please enter Url" });
+//     }
+//     if (typeof body.longUrl !== "string") {
+//       return res
+//         .status(400)
+//         .send({ status: false, message: "Please enter url in string" });
+//     }
+
+//     let longUrl = await GET_ASYNC(`${body.longUrl}`);
+
+//     let objectConversion = JSON.parse(longUrl);
+
+//     if (longUrl) {
+//       return res.status(200).send({status: true ,message : "data is coming from cache and it is already exist", data : objectConversion});
+//     }
+
+//     let checkUrl = await axios
+//       .get(body.longUrl)
+//       .then(() => body.longUrl)
+//       .catch((err) => false);
+
+//     if (!checkUrl) {
+//       return res.status(400).send({ status: false, message: "invalid url" });
+//     }
+
+//     let createUrl = shortId.generate().toLowerCase();
+
+//     let baseUrl = process.env.BASEURL;
+//     body.shortUrl = baseUrl + createUrl;
+//     body.urlCode = createUrl;
+
+//     let checkData = await urlModel
+//       .findOne({ longUrl: body.longUrl })
+//       .select({ urlCode: 1, longUrl: 1, shortUrl: 1, _id: 0 });
+
+//     if (checkData) {
+//       return res
+//         .status(200)
+//         .send({ message:"this data is already exist and it is coming from mongo db", data: checkData });
+//     }
+
+//     let createData = await urlModel.create(body);
+
+//     let urls = {longUrl:createData.longUrl, urlCode: createData.urlCode, shortUrl: createData.shortUrl}
+
+//     await SET_ASYNC(`${body.longUrl}`, 60 * 1440, JSON.stringify(urls));
+
+//     return res.status(201).send({
+//       status: true,
+//       data: urls
+//     });
+//   } catch (error) {
+//     return res.status(500).send({ status: false, message: error.message });
+//   }
+// };
 
 //==================Get API================//
 
