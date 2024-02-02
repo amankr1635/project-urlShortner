@@ -40,17 +40,17 @@ const create = async (req, res) => {
 
     // let longUrl = await GET_ASYNC(`${body.longUrl}`);
 
-    let objectConversion = JSON.parse(longUrl);
+    // let objectConversion = JSON.parse(longUrl);
 
-    if (longUrl) {
-      return res
-        .status(200)
-        .send({
-          status: true,
-          message: "data is coming from cache and it is already exist",
-          data: objectConversion,
-        });
-    }
+    // if (longUrl) {
+    //   return res
+    //     .status(200)
+    //     .send({
+    //       status: true,
+    //       message: "data is coming from cache and it is already exist",
+    //       data: objectConversion,
+    //     });
+    // }
 
     let checkUrl = await axios
       .get(body.longUrl)
@@ -113,11 +113,14 @@ const getUrl = async (req, res) => {
 
     // let createdUrl = await GET_ASYNC(` ${param} `);
 
-    let objectConversion = JSON.parse(createdUrl);
+    // let objectConversion = JSON.parse(createdUrl);
 
-    if (createdUrl) {
-      return res.status(302).redirect(objectConversion);
-    } else {
+    // if (createdUrl) {
+    //   return res.status(302).redirect(objectConversion);
+    // } 
+    
+    // else {
+      
       let getUrl = await urlModel
         .findOne({ urlCode: param })
         .select({ longUrl: 1, _id: 0 });
@@ -132,7 +135,7 @@ const getUrl = async (req, res) => {
 
       // await SET_ASYNC(`${param}`, 60 * 1440, JSON.stringify(longUrl));
       res.status(302).redirect(longUrl);
-    }
+    // }
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message });
   }
