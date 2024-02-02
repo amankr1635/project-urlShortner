@@ -2,25 +2,25 @@ const urlModel = require("../models/urlModels");
 const shortId = require("shortid");
 const axios = require("axios");
 const { promisify } = require("util");
-const redis = require("redis");
+// const redis = require("redis");
 require("dotenv").config();
 
-const redisClient = redis.createClient(
-  process.env.REDIS_PORT,
-  process.env.REDIS_HOST,
-  { no_ready_check: true }
-);
+// const redisClient = redis.createClient(
+//   process.env.REDIS_PORT,
+//   process.env.REDIS_HOST,
+//   { no_ready_check: true }
+// );
 
-redisClient.auth(process.env.REDIS_PASS, function (err) {
-  if (err) throw err;
-});
+// redisClient.auth(process.env.REDIS_PASS, function (err) {
+//   if (err) throw err;
+// });
 
-redisClient.on("connect", async function () {
-  console.log("Connected to Redis..");
-});
+// redisClient.on("connect", async function () {
+//   console.log("Connected to Redis..");
+// });
 
-const SET_ASYNC = promisify(redisClient.SETEX).bind(redisClient); //setex figuer it out
-const GET_ASYNC = promisify(redisClient.GET).bind(redisClient); //getex explore
+// const SET_ASYNC = promisify(redisClient.SETEX).bind(redisClient); //setex figuer it out
+// const GET_ASYNC = promisify(redisClient.GET).bind(redisClient); //getex explore
 
 //=============Create API==============//
 
@@ -38,7 +38,7 @@ const create = async (req, res) => {
         .send({ status: false, message: "Please enter url in string" });
     }
 
-    let longUrl = await GET_ASYNC(`${body.longUrl}`);
+    // let longUrl = await GET_ASYNC(`${body.longUrl}`);
 
     let objectConversion = JSON.parse(longUrl);
 
@@ -88,7 +88,7 @@ const create = async (req, res) => {
       shortUrl: createData.shortUrl,
     };
 
-    await SET_ASYNC(`${body.longUrl}`, 60 * 1440, JSON.stringify(urls));
+    // await SET_ASYNC(`${body.longUrl}`, 60 * 1440, JSON.stringify(urls));
 
     return res.status(201).send({
       status: true,
@@ -111,7 +111,7 @@ const getUrl = async (req, res) => {
         .send({ status: false, message: "urlcode is not valid" });
     }
 
-    let createdUrl = await GET_ASYNC(` ${param} `);
+    // let createdUrl = await GET_ASYNC(` ${param} `);
 
     let objectConversion = JSON.parse(createdUrl);
 
@@ -130,7 +130,7 @@ const getUrl = async (req, res) => {
 
       let longUrl = getUrl.longUrl;
 
-      await SET_ASYNC(`${param}`, 60 * 1440, JSON.stringify(longUrl));
+      // await SET_ASYNC(`${param}`, 60 * 1440, JSON.stringify(longUrl));
       res.status(302).redirect(longUrl);
     }
   } catch (error) {
